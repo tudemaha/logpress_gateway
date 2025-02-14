@@ -13,6 +13,7 @@ func main() {
 	if err != nil {
 		log.Panicf("ERROR load .env: %v", err)
 	}
+
 	routes.LoadRoutes()
 	server.StartServer()
 }

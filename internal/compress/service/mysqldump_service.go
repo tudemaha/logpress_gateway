@@ -2,7 +2,6 @@ package service
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -32,7 +31,6 @@ func CreateDump() string {
 	}
 	exec.Command("mysqldump", dumpArgs...).Output()
 	time.Sleep(5 * time.Second)
-	log.Println(dumpArgs)
 
 	return id
 }

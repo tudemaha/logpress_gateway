@@ -12,6 +12,7 @@ func ReadConfig() (LogpressConfig, error) {
 	if err != nil {
 		return logpressConfig, err
 	}
+	defer file.Close()
 
 	jsonDecoder := json.NewDecoder(file)
 	err = jsonDecoder.Decode(&logpressConfig)
@@ -23,10 +24,11 @@ func ReadConfig() (LogpressConfig, error) {
 }
 
 func WriteConfig(logpressConfig LogpressConfig) error {
-	file, err := os.OpenFile("./config/logpress.json", os.O_TRUNC|os.O_WRONLY, 0755)
+	file, err := os.OpenFile("./config/logpress.json", os.O_TRUNC|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
 	}
+	defer file.Close()
 
 	jsonEncoder := json.NewEncoder(file)
 	err = jsonEncoder.Encode(logpressConfig)

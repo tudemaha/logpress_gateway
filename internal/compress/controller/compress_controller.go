@@ -16,6 +16,10 @@ func CompressHandler() http.HandlerFunc {
 		response.DefaultOK()
 		json.NewEncoder(w).Encode(response)
 
-		go service.CreateDump()
+		go func() {
+			filename := service.CreateDump()
+			service.CompressGZIP(filename)
+			service.DeleteUncompressed(filename)
+		}()
 	}
 }

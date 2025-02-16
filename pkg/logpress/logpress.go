@@ -2,25 +2,28 @@ package logpress
 
 import (
 	"encoding/json"
+	"log"
 	"os"
 )
 
-func ReadConfig() (LogpressConfig, error) {
-	var logpressConfig LogpressConfig
+var LoadLogpressConfig LogpressConfig
+
+func ReadConfig() {
+	log.Println("INFO ReadConfig: loading logpress config...")
 
 	file, err := os.Open("./config/logpress.json")
 	if err != nil {
-		return logpressConfig, err
+		log.Fatalf("ERROR ReadConfig fatal error: %v", err)
 	}
 	defer file.Close()
 
 	jsonDecoder := json.NewDecoder(file)
-	err = jsonDecoder.Decode(&logpressConfig)
+	err = jsonDecoder.Decode(&LoadLogpressConfig)
 	if err != nil {
-		return logpressConfig, nil
+		log.Fatalf("ERROR ReadConfig fatal error: %v", err)
 	}
 
-	return logpressConfig, nil
+	log.Println("INFO ReadConfig: LogPress config loaded.")
 }
 
 func WriteConfig(logpressConfig LogpressConfig) error {

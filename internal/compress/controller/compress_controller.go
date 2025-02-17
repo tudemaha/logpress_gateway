@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/tudemaha/logpress_gateway/internal/compress/service"
@@ -18,8 +19,17 @@ func CompressHandler() http.HandlerFunc {
 
 		go func() {
 			filename := service.CreateDump()
-			service.CompressGZIP(filename)
-			service.DeleteUncompressed(filename)
+			if err := service.CompressGZIP(filename); err != nil {
+				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
+			}
+
+			if err := service.DeleteUncompressed(filename); err != nil {
+				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
+			}
+
+			if err := service.TransferCompressedDump(filename); err != nil {
+				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
+			}
 		}()
 	}
 }

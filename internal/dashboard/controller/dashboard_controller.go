@@ -3,6 +3,7 @@ package controller
 import (
 	"encoding/json"
 	"html/template"
+	"io"
 	"net/http"
 
 	dashboardDto "github.com/tudemaha/logpress_gateway/internal/dashboard/dto"
@@ -24,6 +25,12 @@ func DashboardHandler() http.HandlerFunc {
 			renderDashboard(w, username)
 			return
 		}
+
+		var response globalDto.Response
+		w.Header().Add("Content-Type", "application/json")
+		response.DefaultNotAllowed()
+		w.WriteHeader(response.Code)
+		json.NewEncoder(w).Encode(response)
 	}
 }
 
@@ -58,5 +65,66 @@ func renderDashboard(w http.ResponseWriter, username string) {
 		w.WriteHeader(response.Code)
 		json.NewEncoder(w).Encode(response)
 		return
+	}
+}
+
+func UpdateConfig() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var response globalDto.Response
+		w.Header().Add("Content-Type", "application/json")
+		oldConfig := logpress.LoadLogpressConfig
+
+		if r.Method != "PUT" {
+			response.DefaultNotAllowed()
+			w.WriteHeader(response.Code)
+			json.NewEncoder(w).Encode(response)
+			return
+		}
+
+		_, auth := utils.GetSession(w, r)
+		if !auth {
+			response.DefaultForbidden()
+			w.WriteHeader(response.Code)
+			json.NewEncoder(w).Encode(response)
+			return
+		}
+
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			response.DefaultInternalError()
+			w.WriteHeader(response.Code)
+			response.Data = []string{err.Error()}
+			json.NewEncoder(w).Encode(response)
+			return
+		}
+
+		var newConfig logpress.LogpressConfig
+		err = json.Unmarshal(body, &newConfig)
+		if err != nil {
+			response.DefaultInternalError()
+			w.WriteHeader(response.Code)
+			response.Data = []string{err.Error()}
+			json.NewEncoder(w).Encode(response)
+			return
+		}
+
+		oldConfig.CronInterval = newConfig.CronInterval
+		oldConfig.CronUnit = newConfig.CronUnit
+		oldConfig.Threshold = newConfig.Threshold
+		oldConfig.ThresholdUnit = newConfig.ThresholdUnit
+
+		err = logpress.WriteConfig(oldConfig)
+		if err != nil {
+			response.DefaultInternalError()
+			w.WriteHeader(response.Code)
+			response.Data = []string{err.Error()}
+			json.NewEncoder(w).Encode(response)
+			return
+		}
+
+		logpress.ReadConfig()
+
+		response.DefaultOK()
+		json.NewEncoder(w).Encode(response)
 	}
 }

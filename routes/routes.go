@@ -18,6 +18,7 @@ func LoadRoutes() {
 
 	http.HandleFunc("/login", authController.LoginHandler())
 	http.HandleFunc("/", dashboardController.DashboardHandler())
+	http.HandleFunc("/config", dashboardController.UpdateConfig())
 
 	http.HandleFunc("/ping", pingController.PingHandler())
 	http.HandleFunc("/compress", compressController.CompressHandler())

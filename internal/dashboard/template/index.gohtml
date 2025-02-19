@@ -39,33 +39,14 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>2025-02-18 21:32:11</td>
-                  <td>3 GB</td>
-                  <td>100 ms</td>
-                  <td>710 ms</td>
-                  <td>50 ms</td>
-                  <td>1000 ms</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>2025-02-18 21:32:11</td>
-                  <td>3 GB</td>
-                  <td>100 ms</td>
-                  <td>710 ms</td>
-                  <td>50 ms</td>
-                  <td>1000 ms</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>2025-02-18 21:32:11</td>
-                  <td>3 GB</td>
-                  <td>100 ms</td>
-                  <td>710 ms</td>
-                  <td>50 ms</td>
-                  <td>1000 ms</td>
-                </tr>
+                {{ range $i, $values := .TransferLogs }}
+                  <tr>
+                    <th scope="row">{{ len (printf "a%*s" $i "") }}</th>
+                    {{ range $value := $values }}
+                      <td>{{ $value }}</td>
+                    {{ end }}
+                  </tr>
+                {{ end }}
               </tbody>
             </table>
           </div>

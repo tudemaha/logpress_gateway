@@ -41,11 +41,13 @@ func renderDashboard(w http.ResponseWriter, username string) {
 	}
 
 	dbSize, _ := service.GetDBSize()
+	transferLogs, _ := service.ReadTransferLog()
 
 	data := dashboardDto.DashboardData{
 		Username:       username,
 		LogpressConfig: logpress.LoadLogpressConfig,
 		DBSize:         dbSize,
+		TransferLogs:   transferLogs,
 	}
 
 	err = templ.Execute(w, data)

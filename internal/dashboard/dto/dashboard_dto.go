@@ -6,4 +6,5 @@ type DashboardData struct {
 	Username       string
 	DBSize         float64
 	LogpressConfig logpress.LogpressConfig
+	TransferLogs   [][]string
 }

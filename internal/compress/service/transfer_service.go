@@ -7,14 +7,18 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
+
+	"github.com/tudemaha/logpress_gateway/internal/global/dto"
+	"github.com/tudemaha/logpress_gateway/internal/global/utils"
 )
 
-func TransferCompressedDump(filename string) error {
+func TransferCompressedDump(filename string) (dto.ServerResponse, error) {
 	serverUrl := os.Getenv("SERVER_UPLOAD")
+	var sr dto.ServerResponse
 
 	file, err := os.Open("./dump/compressed/" + filename + ".sql.gz")
 	if err != nil {
-		return err
+		return sr, err
 	}
 	defer file.Close()
 
@@ -23,34 +27,39 @@ func TransferCompressedDump(filename string) error {
 
 	fw, err := writer.CreateFormFile("file", filename+".sql.gz")
 	if err != nil {
-		return err
+		return sr, err
 	}
 
 	if _, err = io.Copy(fw, file); err != nil {
-		return err
+		return sr, err
 	}
 
 	if err := writer.Close(); err != nil {
-		return err
+		return sr, err
 	}
 
 	req, err := http.NewRequest("POST", serverUrl, &b)
 	if err != nil {
-		return err
+		return sr, err
 	}
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 
 	client := &http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
-		return err
+		return sr, err
 	}
 	defer res.Body.Close()
 
 	body, _ := io.ReadAll(res.Body)
 	if res.StatusCode != 200 {
-		return errors.New(string(body))
+		return sr, errors.New(string(body))
 	}
 
-	return nil
+	sr, err = utils.ParseServerResponse(body)
+	if err != nil {
+		return sr, err
+	}
+
+	return sr, nil
 }

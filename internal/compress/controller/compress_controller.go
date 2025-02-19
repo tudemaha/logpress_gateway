@@ -2,11 +2,14 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/tudemaha/logpress_gateway/internal/compress/service"
 	"github.com/tudemaha/logpress_gateway/internal/global/dto"
+	globalService "github.com/tudemaha/logpress_gateway/internal/global/service"
+	"github.com/tudemaha/logpress_gateway/pkg/logpress"
 )
 
 func CompressHandler() http.HandlerFunc {
@@ -25,16 +28,32 @@ func CompressHandler() http.HandlerFunc {
 		json.NewEncoder(w).Encode(response)
 
 		go func() {
+			var sr dto.ServerResponse
+			var err error
+			dbSize, _ := globalService.GetDBSize()
+
 			filename := service.CreateDump()
-			if err := service.CompressGZIP(filename); err != nil {
+			if err = service.CompressGZIP(filename); err != nil {
 				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
 			}
 
-			if err := service.DeleteUncompressed(filename); err != nil {
+			if err = service.DeleteUncompressed(filename); err != nil {
 				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
 			}
 
-			if err := service.TransferCompressedDump(filename); err != nil {
+			if sr, err = service.TransferCompressedDump(filename); err != nil {
+				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
+			}
+
+			transferLog := fmt.Sprintf("%s,%f %s,%d ms,%d ms,%d ms,%d ms\n",
+				sr.Data.TimestampSummary.StartTime[:19],
+				dbSize, logpress.LoadLogpressConfig.ThresholdUnit,
+				sr.Data.DurationSummary.TransferDuration,
+				sr.Data.DurationSummary.DecompressDuration,
+				sr.Data.DurationSummary.MergeDuration,
+				sr.Data.DurationSummary.TotalDuration,
+			)
+			if err := globalService.AppendTransferLog(transferLog); err != nil {
 				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
 			}
 		}()

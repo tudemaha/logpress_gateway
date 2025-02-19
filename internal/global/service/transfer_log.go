@@ -3,7 +3,6 @@ package service
 import (
 	"encoding/csv"
 	"os"
-	"strings"
 )
 
 func ReadTransferLog() ([][]string, error) {
@@ -22,16 +21,13 @@ func ReadTransferLog() ([][]string, error) {
 	return records, nil
 }
 
-func AppendTransferLog(transferLog []string) error {
+func AppendTransferLog(transferLog string) error {
 	file, err := os.OpenFile("./internal/global/log/transfer.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
 	}
 
-	transferLogStr := strings.Join(transferLog, ",")
-	transferLogStr += "\n"
-
-	_, err = file.WriteString(transferLogStr)
+	_, err = file.WriteString(transferLog)
 	if err != nil {
 		return err
 	}

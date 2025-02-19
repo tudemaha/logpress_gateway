@@ -11,6 +11,9 @@ import (
 func LoadRoutes() {
 	log.Println("INFO LoadRoutes: loading routes...")
 
+	fs := http.FileServer(http.Dir("public"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
 	http.HandleFunc("/ping", pingController.PingHandler())
 	http.HandleFunc("/compress", compressController.CompressHandler())
 

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | LogPress</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-evenly mt-5 gx-4">
+        <div class="col-md-9">
+          <div class="border border-dark rounded p-3">
+            <h4 class="text-center fw-semibold">Monitoring</h4>
+            <p>Current DB Size: <b>4 MB</b></p>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col" rowspan="2">#</th>
+                  <th scope="col" rowspan="2">Timestamp</th>
+                  <th scope="col" rowspan="2">Database Size</th>
+                  <th scope="col" colspan="4">Timing</th>
+                </tr>
+                <tr>
+                  <th scope="col">Transfer</th>
+                  <th scope="col">Decompress</th>
+                  <th scope="col">Merge</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>2025-02-18 21:32:11</td>
+                  <td>3 GB</td>
+                  <td>100 ms</td>
+                  <td>710 ms</td>
+                  <td>50 ms</td>
+                  <td>1000 ms</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>2025-02-18 21:32:11</td>
+                  <td>3 GB</td>
+                  <td>100 ms</td>
+                  <td>710 ms</td>
+                  <td>50 ms</td>
+                  <td>1000 ms</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>2025-02-18 21:32:11</td>
+                  <td>3 GB</td>
+                  <td>100 ms</td>
+                  <td>710 ms</td>
+                  <td>50 ms</td>
+                  <td>1000 ms</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="border border-dark rounded p-3">
+            <h4 class="text-center fw-semibold">Control</h4>
+            <form action="" class="mb-1">
+              <div class="mb-3">
+                <label for="threshold" class="form-label">Threshold</label>
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    aria-label="Text input with dropdown button"
+                    name="threshold"
+                    min="1"
+                    value="1"
+                  />
+                  <select
+                    class="form-select"
+                    name="threshold_unit"
+                    id="threshold_unit"
+                  >
+                    <option value="MB">MB</option>
+                    <option selected value="GB">GB</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="cron" class="form-label">Cron Interval</label>
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    aria-label="Text input with dropdown button"
+                    name="cron"
+                    min="1"
+                    value="1"
+                  />
+                  <select class="form-select" name="cron_unit" id="cron_unit">
+                    <option value="sec">sec</option>
+                    <option selected value="min">min</option>
+                    <option value="hour">hour</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-dark">Change</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

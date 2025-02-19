@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/joho/godotenv"
+	"github.com/tudemaha/logpress_gateway/pkg/logpress"
 	"github.com/tudemaha/logpress_gateway/pkg/server"
 	"github.com/tudemaha/logpress_gateway/routes"
 )
@@ -15,7 +16,7 @@ func main() {
 	}
 
 	// database.DatabaseConnection()
-	// logpress.ReadConfig()
+	logpress.ReadConfig()
 
 	// go cron.StartCron()
 

@@ -35,10 +35,13 @@ func StartCron() {
 			log.Printf("INFO cron job compression status code: %d", res.StatusCode)
 		}
 
-		if config.CronUnit == "sec" {
+		switch config.CronUnit {
+		case "sec":
 			time.Sleep(time.Duration(config.CronInterval) * time.Second)
-		} else {
+		case "min":
 			time.Sleep(time.Duration(config.CronInterval) * time.Minute)
+		case "hour":
+			time.Sleep(time.Duration(config.CronInterval) * time.Hour)
 		}
 	}
 }

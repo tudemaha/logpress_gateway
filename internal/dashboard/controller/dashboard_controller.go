@@ -14,11 +14,11 @@ import (
 
 func DashboardHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		username, _ := utils.GetSession(w, r)
-		// if !auth {
-		// 	http.Redirect(w, r, "/login", http.StatusSeeOther)
-		// 	return
-		// }
+		username, auth := utils.GetSession(w, r)
+		if !auth {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
 
 		if r.Method == "GET" {
 			renderDashboard(w, username)

@@ -15,6 +15,10 @@
   <body>
     <div class="container">
       <div class="row justify-content-evenly mt-5 gx-4">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          Welcome back, <b>{{ .Username }}</b>!
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         <div class="col-md-9">
           <div class="border border-dark rounded p-3">
             <h4 class="text-center fw-semibold">Monitoring</h4>

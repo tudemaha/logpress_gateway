@@ -10,7 +10,8 @@ import (
 func GetDBSize() (float64, error) {
 	var dbSize float64
 	config := logpress.LoadLogpressConfig
-	db := database.Connection
+	db := database.DatabaseConnection()
+	defer db.Close()
 
 	stmt := "SELECT ROUND(SUM(data_length + index_length) / 1024 / 1024"
 	if config.ThresholdUnit == "GB" {

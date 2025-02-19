@@ -4,9 +4,6 @@ import (
 	"log"
 
 	"github.com/joho/godotenv"
-	"github.com/tudemaha/logpress_gateway/pkg/cron"
-	"github.com/tudemaha/logpress_gateway/pkg/database"
-	"github.com/tudemaha/logpress_gateway/pkg/logpress"
 	"github.com/tudemaha/logpress_gateway/pkg/server"
 	"github.com/tudemaha/logpress_gateway/routes"
 )
@@ -17,10 +14,10 @@ func main() {
 		log.Panicf("ERROR load .env: %v", err)
 	}
 
-	database.DatabaseConnection()
-	logpress.ReadConfig()
+	// database.DatabaseConnection()
+	// logpress.ReadConfig()
 
-	go cron.StartCron()
+	// go cron.StartCron()
 
 	routes.LoadRoutes()
 	server.StartServer()

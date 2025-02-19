@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"errors"
 	"net/http"
 
 	"github.com/gorilla/sessions"
@@ -21,14 +20,14 @@ func CreateSession(w http.ResponseWriter, r *http.Request, username string) {
 	session.Save(r, w)
 }
 
-func GetSession(w http.ResponseWriter, r *http.Request) (string, error) {
+func GetSession(w http.ResponseWriter, r *http.Request) (string, bool) {
 	session, _ := store.Get(r, "logpress")
 
 	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
-		return "", errors.New("session not started")
+		return "", false
 	}
 
 	username, _ := session.Values["username"].(string)
 
-	return username, nil
+	return username, true
 }

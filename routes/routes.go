@@ -6,6 +6,7 @@ import (
 
 	authController "github.com/tudemaha/logpress_gateway/internal/auth/controller"
 	compressController "github.com/tudemaha/logpress_gateway/internal/compress/controller"
+	dashboardController "github.com/tudemaha/logpress_gateway/internal/dashboard/controller"
 	pingController "github.com/tudemaha/logpress_gateway/internal/ping"
 )
 
@@ -16,6 +17,7 @@ func LoadRoutes() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	http.HandleFunc("/login", authController.LoginHandler())
+	http.HandleFunc("/", dashboardController.DashboardHandler())
 
 	http.HandleFunc("/ping", pingController.PingHandler())
 	http.HandleFunc("/compress", compressController.CompressHandler())

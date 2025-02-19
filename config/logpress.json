@@ -1,9 +1,9 @@
 {
   "username": "admin",
   "password": "$2a$10$LDdbUSmD5/QZRaNqrv9C2OG.GAVKW1HOTt4wm/oRnCwoYD5IstQOq",
-  "threshold": 2,
-  "threshold_unit": "MB",
+  "threshold": 3,
+  "threshold_unit": "GB",
   "last_dump_timestamp": "2025-02-14T11:39:15.704025912+08:00",
-  "cron_interval": 3,
-  "cron_unit": "sec"
+  "cron_interval": 5,
+  "cron_unit": "hour"
 }

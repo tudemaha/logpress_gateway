@@ -14,6 +14,11 @@ import (
 
 func LoginHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		_, auth := utils.GetSession(w, r)
+		if auth {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
+		}
 
 		if r.Method == "GET" {
 			renderLoginPage(w)
@@ -40,6 +45,7 @@ func renderLoginPage(w http.ResponseWriter) {
 	if err != nil {
 		w.Header().Add("Content-Type", "application/json")
 		response.DefaultInternalError()
+		response.Data = []string{err.Error()}
 		w.WriteHeader(response.Code)
 		json.NewEncoder(w).Encode(response)
 		return
@@ -49,6 +55,7 @@ func renderLoginPage(w http.ResponseWriter) {
 	if err != nil {
 		w.Header().Add("Content-Type", "application/json")
 		response.DefaultInternalError()
+		response.Data = []string{err.Error()}
 		w.WriteHeader(response.Code)
 		json.NewEncoder(w).Encode(response)
 		return
@@ -62,6 +69,7 @@ func validateLogin(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		w.Header().Add("Content-Type", "application/json")
 		response.DefaultInternalError()
+		response.Data = []string{err.Error()}
 		w.WriteHeader(response.Code)
 		json.NewEncoder(w).Encode(response)
 		return
@@ -83,6 +91,7 @@ func validateLogin(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			w.Header().Add("Content-Type", "securecookieapplication/json")
 			response.DefaultInternalError()
+			response.Data = []string{err.Error()}
 			w.WriteHeader(response.Code)
 			json.NewEncoder(w).Encode(response)
 			return
@@ -92,6 +101,7 @@ func validateLogin(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			w.Header().Add("Content-Type", "application/json")
 			response.DefaultInternalError()
+			response.Data = []string{err.Error()}
 			w.WriteHeader(response.Code)
 			json.NewEncoder(w).Encode(response)
 			return

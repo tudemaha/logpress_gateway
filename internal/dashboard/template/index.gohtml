@@ -18,7 +18,7 @@
         <div class="col-md-9">
           <div class="border border-dark rounded p-3">
             <h4 class="text-center fw-semibold">Monitoring</h4>
-            <p>Current DB Size: <b>4 MB</b></p>
+            <p>Current DB Size: <b>{{ .DBSize }} {{ .LogpressConfig.ThresholdUnit }}</b></p>
             <table class="table">
               <thead>
                 <tr>
@@ -79,15 +79,16 @@
                     aria-label="Text input with dropdown button"
                     name="threshold"
                     min="1"
-                    value="1"
+                    value="{{ .LogpressConfig.Threshold }}"
                   />
                   <select
                     class="form-select"
                     name="threshold_unit"
                     id="threshold_unit"
+                    selected="{{ .LogpressConfig.ThresholdUnit }}"
                   >
                     <option value="MB">MB</option>
-                    <option selected value="GB">GB</option>
+                    <option value="GB">GB</option>
                   </select>
                 </div>
               </div>
@@ -100,11 +101,16 @@
                     aria-label="Text input with dropdown button"
                     name="cron"
                     min="1"
-                    value="1"
+                    value="{{ .LogpressConfig.CronInterval }}"
                   />
-                  <select class="form-select" name="cron_unit" id="cron_unit">
+                  <select
+                    class="form-select"
+                    name="cron_unit"
+                    id="cron_unit"
+                    selected="{{ .LogpressConfig.CronUnit }}"
+                  >
                     <option value="sec">sec</option>
-                    <option selected value="min">min</option>
+                    <option value="min">min</option>
                     <option value="hour">hour</option>
                   </select>
                 </div>

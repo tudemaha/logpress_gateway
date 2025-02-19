@@ -14,6 +14,13 @@ func CompressHandler() http.HandlerFunc {
 		w.Header().Add("Content-Type", "application/json")
 		var response dto.Response
 
+		if r.Method != "POST" {
+			response.DefaultNotAllowed()
+			w.WriteHeader(response.Code)
+			json.NewEncoder(w).Encode(response)
+			return
+		}
+
 		response.DefaultOK()
 		json.NewEncoder(w).Encode(response)
 

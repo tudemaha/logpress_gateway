@@ -3,19 +3,25 @@ package utils
 import (
 	"net/http"
 
+	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
 )
 
 var (
-	key   = []byte("secret-key")
+	key   = securecookie.GenerateRandomKey(32)
 	store = sessions.NewCookieStore(key)
 )
 
 func CreateSession(w http.ResponseWriter, r *http.Request, username string) {
-	store.MaxAge(3600)
+	store.Options = &sessions.Options{
+		MaxAge:   3600,
+		HttpOnly: true,
+		Secure:   true,
+	}
+
 	session, _ := store.Get(r, "logpress")
 
-	session.Values["autenticated"] = true
+	session.Values["authenticated"] = true
 	session.Values["username"] = username
 	session.Save(r, w)
 }

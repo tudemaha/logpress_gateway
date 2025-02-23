@@ -37,7 +37,7 @@ func DashboardHandler() http.HandlerFunc {
 func renderDashboard(w http.ResponseWriter, username string) {
 	var response globalDto.Response
 
-	templ, err := template.ParseFiles("./internal/dashboard/template/index.gohtml")
+	templ, err := template.ParseFiles("./public/templates/index.gohtml")
 	if err != nil {
 		w.Header().Add("Content-Type", "application/json")
 		response.DefaultInternalError()

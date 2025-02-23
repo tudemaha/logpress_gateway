@@ -87,7 +87,7 @@ func validateLogin(w http.ResponseWriter, r *http.Request) {
 			Error: true,
 		}
 
-		templ, err := template.ParseFiles("./internal/auth/template/login.gohtml")
+		templ, err := template.ParseFiles("./public/templates/login.gohtml")
 		if err != nil {
 			w.Header().Add("Content-Type", "securecookieapplication/json")
 			response.DefaultInternalError()

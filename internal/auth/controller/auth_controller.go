@@ -41,7 +41,7 @@ func LoginHandler() http.HandlerFunc {
 func renderLoginPage(w http.ResponseWriter) {
 	var response globalDto.Response
 
-	templ, err := template.ParseFiles("./internal/auth/template/login.gohtml")
+	templ, err := template.ParseFiles("./public/templates/login.gohtml")
 	if err != nil {
 		w.Header().Add("Content-Type", "application/json")
 		response.DefaultInternalError()

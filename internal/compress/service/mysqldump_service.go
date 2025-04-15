@@ -24,6 +24,7 @@ func CreateDump() string {
 		"--add-drop-table=false",
 		"--no-create-db=true",
 		"--no-create-info=true",
+		"--single-transaction",
 		"-u", username,
 		"-p" + password,
 		name, "sensors",

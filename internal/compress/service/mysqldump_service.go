@@ -8,9 +8,10 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/tudemaha/logpress_gateway/pkg/logpress"
 )
 
-func CreateDump() string {
+func CreateDump() (string, error) {
 	username := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASS")
 	name := os.Getenv("DB_NAME")
@@ -18,6 +19,8 @@ func CreateDump() string {
 	output, _ := exec.Command("pwd").Output()
 	pwd := strings.TrimSpace(string(output))
 	id := uuid.New().String()
+
+	now := time.Now()
 
 	dumpArgs := []string{
 		"--add-drop-database=false",
@@ -33,5 +36,14 @@ func CreateDump() string {
 	exec.Command("mysqldump", dumpArgs...).Output()
 	time.Sleep(5 * time.Second)
 
-	return id
+	logpressConfig := logpress.LoadLogpressConfig
+	logpressConfig.LastDumpTimestamp = now
+
+	if err := logpress.WriteConfig(logpressConfig); err != nil {
+		return "", err
+	}
+
+	logpress.ReadConfig()
+
+	return id, nil
 }

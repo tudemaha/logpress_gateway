@@ -32,7 +32,10 @@ func CompressHandler() http.HandlerFunc {
 			var err error
 			dbSize, _ := globalService.GetDBSize()
 
-			filename := service.CreateDump()
+			filename, err := service.CreateDump()
+			if err != nil {
+				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
+			}
 			if err = service.CompressGZIP(filename); err != nil {
 				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
 			}
@@ -54,6 +57,10 @@ func CompressHandler() http.HandlerFunc {
 				sr.Data.DurationSummary.TotalDuration,
 			)
 			if err := globalService.AppendTransferLog(transferLog); err != nil {
+				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
+			}
+
+			if err := service.DeleteOldData(); err != nil {
 				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
 			}
 		}()

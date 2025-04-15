@@ -8,6 +8,7 @@ import (
 
 	globalDto "github.com/tudemaha/logpress_gateway/internal/global/dto"
 	receiveDto "github.com/tudemaha/logpress_gateway/internal/receive/dto"
+	"github.com/tudemaha/logpress_gateway/internal/receive/service"
 	"github.com/tudemaha/logpress_gateway/pkg/database"
 )
 
@@ -50,6 +51,9 @@ func receiveData(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println(sensorData)
 
+	transformSensorData(&sensorData)
+	log.Println(sensorData)
+
 	db := database.DatabaseConnection()
 	defer db.Close()
 
@@ -77,4 +81,12 @@ func receiveData(w http.ResponseWriter, r *http.Request) {
 
 	response.DefaultOK()
 	json.NewEncoder(w).Encode(response)
+}
+
+func transformSensorData(data *receiveDto.SensorData) {
+	data.CO = service.TransformFloat(data.CO, 14)
+	data.Humid = service.TransformFloat(data.Humid, 14)
+	data.Temp = service.TransformFloat(data.Temp, 14)
+	data.LPG = service.TransformFloat(data.LPG, 14)
+	data.Smoke = service.TransformFloat(data.Smoke, 14)
 }

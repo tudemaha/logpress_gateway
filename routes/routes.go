@@ -8,6 +8,7 @@ import (
 	compressController "github.com/tudemaha/logpress_gateway/internal/compress/controller"
 	dashboardController "github.com/tudemaha/logpress_gateway/internal/dashboard/controller"
 	pingController "github.com/tudemaha/logpress_gateway/internal/ping"
+	receiveController "github.com/tudemaha/logpress_gateway/internal/receive/controller"
 )
 
 func LoadRoutes() {
@@ -22,6 +23,8 @@ func LoadRoutes() {
 
 	http.HandleFunc("/ping", pingController.PingHandler())
 	http.HandleFunc("/compress", compressController.CompressHandler())
+
+	http.HandleFunc("/sensors", receiveController.ReceiveHandler())
 
 	log.Println("INFO LoadRoutes: routes loaded.")
 }

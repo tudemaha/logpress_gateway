@@ -26,3 +26,7 @@ go.work.sum
 
 dump
 *.log
+
+node_modules
+
+.DS_Store

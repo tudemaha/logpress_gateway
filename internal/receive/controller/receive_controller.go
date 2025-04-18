@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/google/uuid"
 	globalDto "github.com/tudemaha/logpress_gateway/internal/global/dto"
 	receiveDto "github.com/tudemaha/logpress_gateway/internal/receive/dto"
 	"github.com/tudemaha/logpress_gateway/internal/receive/service"
@@ -57,11 +58,14 @@ func receiveData(w http.ResponseWriter, r *http.Request) {
 	db := database.DatabaseConnection()
 	defer db.Close()
 
+	id := uuid.New().String()
+
 	stmt := `INSERT INTO sensors 
-		(timestamp, device_id, co, humid, temp, lpg, smoke, light, motion)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+		(id, timestamp, device_id, co, humid, temp, lpg, smoke, light, motion)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 	_, err = db.Exec(stmt,
+		id,
 		sensorData.Timestamp,
 		sensorData.DeviceID,
 		sensorData.CO,

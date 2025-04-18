@@ -52,6 +52,14 @@ func receiveData(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println(sensorData)
 
+	if sensorData.CO == 0 || sensorData.Humid == 0 || sensorData.LPG == 0 || sensorData.Smoke == 0 || sensorData.Temp == 0 {
+		response.DefaultBadRequest()
+		w.WriteHeader(response.Code)
+		response.Data = []string{"co, humid, lpg, smoke, or temp must not 0"}
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
 	transformSensorData(&sensorData)
 	log.Println(sensorData)
 

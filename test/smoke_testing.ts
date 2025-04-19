@@ -18,7 +18,7 @@ export const options = {
 
 export default function () {
   const data = sensorData[Math.floor(Math.random() * sensorData.length)];
-  console.log(data);
+  // console.log(data);
   const payload = JSON.stringify({
     timestamp: data.ts,
     device_id: data.device,

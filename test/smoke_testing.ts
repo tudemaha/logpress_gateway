@@ -18,7 +18,7 @@ export const options = {
 
 export default function () {
   const data = sensorData[Math.floor(Math.random() * sensorData.length)];
-  // console.log(data);
+
   const payload = JSON.stringify({
     timestamp: data.ts,
     device_id: data.device,
@@ -36,6 +36,10 @@ export default function () {
   const res = http.post(`${__ENV.GATEWAY_ENDPOINT}/sensors`, payload, {
     headers,
   });
+
+  if (res.status !== 200) {
+    console.log(res.body);
+  }
 
   check(res, {
     "Res status is 200": (r) => res.status === 200,

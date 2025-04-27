@@ -78,5 +78,86 @@
     },
     "error": null,
     "duration": "135s"
+  },
+
+  {
+    "code": 200,
+    "message": "success",
+    "data": {
+      "duration_summary": {
+        "transfer_duration": 101359070,
+        "decompress_duration": 0,
+        "merge_duration": 6899374,
+        "total_duration": 108258444
+      },
+      "timestamp_summary": {
+        "start_time": "2025-04-27 12:40:48.195762285 +0000 UTC m=+619866.268153682",
+        "transfer_time": "2025-04-27 12:42:29.554832541 +0000 UTC m=+619967.627223920",
+        "decompress_time": "0001-01-01 00:00:00 +0000 UTC",
+        "merge_time": "2025-04-27 12:42:36.454206745 +0000 UTC m=+619974.526598135"
+      }
+    },
+    "error": null,
+    "duration": "109s"
+  },
+  {
+    "code": 200,
+    "message": "success",
+    "data": {
+      "duration_summary": {
+        "transfer_duration": 218046262,
+        "decompress_duration": 0,
+        "merge_duration": 10099754,
+        "total_duration": 228146016
+      },
+      "timestamp_summary": {
+        "start_time": "2025-04-27 12:43:25.582456224 +0000 UTC m=+620023.654847611",
+        "transfer_time": "2025-04-27 12:47:03.628718551 +0000 UTC m=+620241.701109938",
+        "decompress_time": "0001-01-01 00:00:00 +0000 UTC",
+        "merge_time": "2025-04-27 12:47:13.728472544 +0000 UTC m=+620251.800863960"
+      }
+    },
+    "error": null,
+    "duration": "228s"
+  },
+  {
+    "code": 200,
+    "message": "success",
+    "data": {
+      "duration_summary": {
+        "transfer_duration": 371012104,
+        "decompress_duration": 0,
+        "merge_duration": 10184883,
+        "total_duration": 381196987
+      },
+      "timestamp_summary": {
+        "start_time": "2025-04-27 12:47:58.36517348 +0000 UTC m=+620296.437564866",
+        "transfer_time": "2025-04-27 12:54:09.377278349 +0000 UTC m=+620667.449669766",
+        "decompress_time": "0001-01-01 00:00:00 +0000 UTC",
+        "merge_time": "2025-04-27 12:54:19.562162076 +0000 UTC m=+620677.634553487"
+      }
+    },
+    "error": null,
+    "duration": "381s"
+  },
+  {
+    "code": 200,
+    "message": "success",
+    "data": {
+      "duration_summary": {
+        "transfer_duration": 549913087,
+        "decompress_duration": 0,
+        "merge_duration": 12697855,
+        "total_duration": 562610942
+      },
+      "timestamp_summary": {
+        "start_time": "2025-04-27 12:56:05.150198937 +0000 UTC m=+620783.222590332",
+        "transfer_time": "2025-04-27 13:05:15.063286639 +0000 UTC m=+621333.135678053",
+        "decompress_time": "0001-01-01 00:00:00 +0000 UTC",
+        "merge_time": "2025-04-27 13:05:27.761141831 +0000 UTC m=+621345.833533215"
+      }
+    },
+    "error": null,
+    "duration": "563s"
   }
 ]

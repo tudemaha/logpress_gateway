@@ -48,7 +48,7 @@ func CompressHandler() http.HandlerFunc {
 				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
 			}
 
-			transferLog := fmt.Sprintf("%s,%f %s,%d ms,%d ms,%d ms,%d ms\n",
+			transferLog := fmt.Sprintf("%s,%f %s,%d ns,%d ns,%d ns,%d ns\n",
 				sr.Data.TimestampSummary.StartTime[:19],
 				dbSize, logpress.LoadLogpressConfig.ThresholdUnit,
 				sr.Data.DurationSummary.TransferDuration,

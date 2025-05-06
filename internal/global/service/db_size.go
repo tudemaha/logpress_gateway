@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/tudemaha/logpress_gateway/pkg/database"
@@ -22,6 +23,10 @@ func GetDBSize() (float64, error) {
 	stmt += " WHERE table_schema = ?"
 	stmt += " GROUP BY table_schema"
 
+	_, err := db.Exec(fmt.Sprintf("ANALYZE TABLE %s.sensors", os.Getenv("DB_NAME")))
+	if err != nil {
+		return dbSize, err
+	}
 	rows, err := db.Query(stmt, os.Getenv("DB_NAME"))
 	if err != nil {
 		return dbSize, err

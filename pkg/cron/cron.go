@@ -11,10 +11,20 @@ import (
 	"github.com/tudemaha/logpress_gateway/pkg/logpress"
 )
 
+var CurrentConfig = make(chan logpress.LogpressConfig)
+
 func StartCron() {
 	log.Println("INFO StartCron: strting cron job...")
 
-	config := logpress.LoadLogpressConfig
+	var config logpress.LogpressConfig
+	go func() {
+		for {
+			config = <-CurrentConfig
+		}
+	}()
+
+	CurrentConfig <- logpress.LoadLogpressConfig
+
 	var dbSize float64
 	var err error
 	var res *http.Response
@@ -34,6 +44,7 @@ func StartCron() {
 			}
 			log.Printf("INFO cron job compression status code: %d", res.StatusCode)
 		}
+		log.Println(config)
 
 		switch config.CronUnit {
 		case "sec":

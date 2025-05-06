@@ -4,6 +4,6 @@
   "threshold": 200,
   "threshold_unit": "MB",
   "last_dump_timestamp": "2025-02-14T11:39:15.704025912+08:00",
-  "cron_interval": 5,
-  "cron_unit": "hour"
+  "cron_interval": 30,
+  "cron_unit": "sec"
 }

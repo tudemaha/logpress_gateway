@@ -10,6 +10,7 @@ import (
 	globalDto "github.com/tudemaha/logpress_gateway/internal/global/dto"
 	"github.com/tudemaha/logpress_gateway/internal/global/service"
 	"github.com/tudemaha/logpress_gateway/internal/global/utils"
+	"github.com/tudemaha/logpress_gateway/pkg/cron"
 	"github.com/tudemaha/logpress_gateway/pkg/logpress"
 )
 
@@ -123,6 +124,7 @@ func UpdateConfig() http.HandlerFunc {
 		}
 
 		logpress.ReadConfig()
+		cron.CurrentConfig <- logpress.LoadLogpressConfig
 
 		response.DefaultOK()
 		json.NewEncoder(w).Encode(response)

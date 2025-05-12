@@ -14,7 +14,8 @@ import (
 func CreateDump() (string, error) {
 	username := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASS")
-	name := os.Getenv("DB_NAME")
+	dbName := os.Getenv("DB_NAME")
+	tableName := os.Getenv("TABLE_NAME")
 
 	output, _ := exec.Command("pwd").Output()
 	pwd := strings.TrimSpace(string(output))
@@ -30,7 +31,7 @@ func CreateDump() (string, error) {
 		"--single-transaction",
 		"-u", username,
 		"-p" + password,
-		name, os.Getenv("TABLE_NAME"),
+		dbName, tableName,
 		fmt.Sprintf("--result-file=%s/%s/%s.sql", pwd, "dump/uncompressed", id),
 	}
 	exec.Command("mysqldump", dumpArgs...).Output()

@@ -7,7 +7,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/tudemaha/logpress_gateway/internal/global/service"
 	"github.com/tudemaha/logpress_gateway/pkg/logpress"
 )
 
@@ -25,25 +24,25 @@ func StartCron() {
 
 	CurrentConfig <- logpress.LoadLogpressConfig
 
-	var dbSize float64
+	// var dbSize float64
 	var err error
 	var res *http.Response
 
 	log.Println("INFO StartCron: cron job started.")
 
 	for {
-		dbSize, err = service.GetDBSize()
+		// dbSize, err = service.GetDBSize()
 		if err != nil {
 			log.Fatalf("ERROR cron job fatal error: %v", err)
 		}
 
-		if dbSize > float64(config.Threshold) {
-			res, err = http.Post(fmt.Sprintf("http://localhost:%s/compress", os.Getenv("PORT")), "application/json", nil)
-			if err != nil {
-				log.Fatalf("ERROR cron job fatal error: %v", err)
-			}
-			log.Printf("INFO cron job compression status code: %d", res.StatusCode)
+		// if dbSize > float64(config.Threshold) {
+		res, err = http.Post(fmt.Sprintf("http://localhost:%s/compress", os.Getenv("PORT")), "application/json", nil)
+		if err != nil {
+			log.Fatalf("ERROR cron job fatal error: %v", err)
 		}
+		log.Printf("INFO cron job compression status code: %d", res.StatusCode)
+		// }
 		log.Println(config)
 
 		switch config.CronUnit {

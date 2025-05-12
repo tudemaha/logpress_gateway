@@ -70,8 +70,8 @@ func receiveData(w http.ResponseWriter, r *http.Request) {
 	id := uuid.New().String()
 	gatewayID := os.Getenv("GATEWAY_ID")
 
-	stmt := `INSERT INTO sensors 
-		(id, timestamp, node_id, gateway_id, temp, humid, soil_ph, soil_moisture, gas, gps)
+	stmt := `INSERT INTO ` + os.Getenv("TABLE_NAME") +
+		` (id, timestamp, node_id, gateway_id, temp, humid, soil_ph, soil_moisture, gas, gps)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 	_, err = db.Exec(stmt,

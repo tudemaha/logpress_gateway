@@ -30,7 +30,7 @@ func CreateDump() (string, error) {
 		"--single-transaction",
 		"-u", username,
 		"-p" + password,
-		name, "sensors",
+		name, os.Getenv("TABLE_NAME"),
 		fmt.Sprintf("--result-file=%s/%s/%s.sql", pwd, "dump/uncompressed", id),
 	}
 	exec.Command("mysqldump", dumpArgs...).Output()

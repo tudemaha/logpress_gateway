@@ -1,6 +1,8 @@
 package service
 
 import (
+	"os"
+
 	"github.com/tudemaha/logpress_gateway/pkg/database"
 	"github.com/tudemaha/logpress_gateway/pkg/logpress"
 )
@@ -11,7 +13,7 @@ func DeleteOldData() error {
 
 	logpressConfig := logpress.LoadLogpressConfig
 
-	stmt := "DELETE FROM sensors WHERE timestamp < ?"
+	stmt := "DELETE FROM " + os.Getenv("TABLE_NAME") + " WHERE timestamp < ?"
 	_, err := db.Exec(stmt, logpressConfig.LastDumpTimestamp)
 	if err != nil {
 		return err

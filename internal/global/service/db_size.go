@@ -23,7 +23,7 @@ func GetDBSize() (float64, error) {
 	stmt += " WHERE table_schema = ?"
 	stmt += " GROUP BY table_schema"
 
-	_, err := db.Exec(fmt.Sprintf("ANALYZE TABLE %s.sensors", os.Getenv("DB_NAME")))
+	_, err := db.Exec(fmt.Sprintf("ANALYZE TABLE %s.%s", os.Getenv("DB_NAME"), os.Getenv("TABLE_NAME")))
 	if err != nil {
 		return dbSize, err
 	}

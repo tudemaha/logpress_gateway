@@ -16,5 +16,10 @@ func CheckConnection() bool {
 	}
 	res.Body.Close()
 
-	return res.StatusCode == 200
+	if res.StatusCode == 200 {
+		log.Println("CheckConnection: success")
+		return true
+	}
+
+	return false
 }

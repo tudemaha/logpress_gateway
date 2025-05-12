@@ -4,7 +4,7 @@ USE logpress;
 
 CREATE TABLE IF NOT EXISTS sensors (
     id VARCHAR(36) NOT NULL,
-    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     device_id VARCHAR(20) NOT NULL,
     co FLOAT NOT NULL,
     humid FLOAT NOT NULL,
@@ -15,3 +15,17 @@ CREATE TABLE IF NOT EXISTS sensors (
     motion BOOLEAN NOT NULL,
     PRIMARY KEY(id)
 );
+
+CREATE TABLE IF NOT EXISTS new_sensors (
+    id VARCHAR(36) NOT NULL,
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    node_id VARCHAR(36) NOT NULL,
+    gateway_id VARCHAR(36) NOT NULL,
+    temp FLOAT NOT NULL,
+    humid FLOAT NOT NULL,
+    soil_ph FLOAT NOT NULL,
+    soil_moisture FLOAT NOT NULL,
+    gas FLOAT NOT NULL,
+    gps VARCHAR(22) NOT NULL,
+    PRIMARY KEY(id)
+)

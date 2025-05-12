@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/google/uuid"
 	globalDto "github.com/tudemaha/logpress_gateway/internal/global/dto"
@@ -41,7 +42,7 @@ func receiveData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var sensorData receiveDto.SensorData
+	var sensorData receiveDto.NewSensorData
 	err = json.Unmarshal(body, &sensorData)
 	if err != nil {
 		response.DefaultInternalError()
@@ -52,7 +53,7 @@ func receiveData(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println(sensorData)
 
-	if sensorData.CO == 0 || sensorData.Humid == 0 || sensorData.LPG == 0 || sensorData.Smoke == 0 || sensorData.Temp == 0 {
+	if service.CheckNullValue(&sensorData) {
 		response.DefaultBadRequest()
 		w.WriteHeader(response.Code)
 		response.Data = []string{"co, humid, lpg, smoke, or temp must not 0"}
@@ -60,29 +61,30 @@ func receiveData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	transformSensorData(&sensorData)
+	service.TransformSensorData(&sensorData)
 	log.Println(sensorData)
 
 	db := database.DatabaseConnection()
 	defer db.Close()
 
 	id := uuid.New().String()
+	gatewayID := os.Getenv("GATEWAY_ID")
 
 	stmt := `INSERT INTO sensors 
-		(id, timestamp, device_id, co, humid, temp, lpg, smoke, light, motion)
+		(id, timestamp, node_id, gateway_id, temp, humid, soil_ph, soil_moisture, gas, gps)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 	_, err = db.Exec(stmt,
 		id,
 		sensorData.Timestamp,
-		sensorData.DeviceID,
-		sensorData.CO,
-		sensorData.Humid,
+		sensorData.NodeID,
+		gatewayID,
 		sensorData.Temp,
-		sensorData.LPG,
-		sensorData.Smoke,
-		sensorData.Light,
-		sensorData.Motion)
+		sensorData.Humid,
+		sensorData.SoilPH,
+		sensorData.SoilMoisture,
+		sensorData.Gas,
+		sensorData.GPS)
 	if err != nil {
 		response.DefaultInternalError()
 		w.WriteHeader(response.Code)
@@ -93,12 +95,4 @@ func receiveData(w http.ResponseWriter, r *http.Request) {
 
 	response.DefaultOK()
 	json.NewEncoder(w).Encode(response)
-}
-
-func transformSensorData(data *receiveDto.SensorData) {
-	data.CO = service.TransformFloat(data.CO, 14)
-	data.Humid = service.TransformFloat(data.Humid, 14)
-	data.Temp = service.TransformFloat(data.Temp, 14)
-	data.LPG = service.TransformFloat(data.LPG, 14)
-	data.Smoke = service.TransformFloat(data.Smoke, 14)
 }

@@ -13,3 +13,14 @@ type SensorData struct {
 	Light     bool      `json:"light"`
 	Motion    bool      `json:"motion"`
 }
+
+type NewSensorData struct {
+	Timestamp    time.Time `json:"timestamp"`
+	NodeID       string    `json:"node_id"`
+	Temp         float64   `json:"temp"`
+	Humid        float64   `json:"humid"`
+	SoilPH       float64   `json:"soil_ph"`
+	SoilMoisture float64   `json:"soil_moisture"`
+	Gas          float64   `json:"gas"`
+	GPS          string    `json:"gps"`
+}

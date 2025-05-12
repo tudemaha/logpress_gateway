@@ -39,18 +39,18 @@ func CompressHandler() http.HandlerFunc {
 
 			filename, err := service.CreateDump()
 			if err != nil {
-				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
+				log.Fatalf("ERROR CompressHandler.CreateDump fatal error: %v", err)
 			}
 			if err = service.CompressGZIP(filename); err != nil {
-				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
+				log.Fatalf("ERROR CompressHandler.CompressGZIP fatal error: %v", err)
 			}
 
 			if err = service.DeleteUncompressed(filename); err != nil {
-				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
+				log.Fatalf("ERROR CompressHandler.DeleteUncompressed fatal error: %v", err)
 			}
 
 			if sr, err = service.TransferCompressedDump(filename); err != nil {
-				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
+				log.Fatalf("ERROR CompressHandler.TransferCompressedDump fatal error: %v", err)
 			}
 
 			transferLog := fmt.Sprintf("%s,%f %s,%d ns,%d ns,%d ns,%d ns\n",
@@ -62,11 +62,11 @@ func CompressHandler() http.HandlerFunc {
 				sr.Data.DurationSummary.TotalDuration,
 			)
 			if err := globalService.AppendTransferLog(transferLog); err != nil {
-				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
+				log.Fatalf("ERROR CompressHandler.AppendTransferLog fatal error: %v", err)
 			}
 
 			if err := service.DeleteOldData(); err != nil {
-				log.Fatalf("ERROR CompressHandler fatal error: %v", err)
+				log.Fatalf("ERROR CompressHandler.DeleteOldData fatal error: %v", err)
 			}
 		}()
 	}

@@ -13,7 +13,7 @@ import (
 )
 
 func TransferCompressedDump(filename string) (dto.ServerResponse, error) {
-	serverUrl := os.Getenv("SERVER_UPLOAD")
+	serverUrl := os.Getenv("SERVER_UPLOAD") + "/upload"
 	var sr dto.ServerResponse
 
 	file, err := os.Open("./dump/compressed/" + filename + ".sql.gz")

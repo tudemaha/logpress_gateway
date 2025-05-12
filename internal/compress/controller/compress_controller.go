@@ -30,6 +30,11 @@ func CompressHandler() http.HandlerFunc {
 		go func() {
 			var sr dto.ServerResponse
 			var err error
+
+			if !service.CheckConnection() {
+				return
+			}
+
 			dbSize, _ := globalService.GetDBSize()
 
 			filename, err := service.CreateDump()

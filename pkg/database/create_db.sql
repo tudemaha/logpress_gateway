@@ -28,4 +28,6 @@ CREATE TABLE IF NOT EXISTS new_sensors (
     gas FLOAT NOT NULL,
     gps VARCHAR(22) NOT NULL,
     PRIMARY KEY(id)
-)
+);
+
+CREATE TABLE IF NOT EXISTS persist_sensors LIKE new_sensors;

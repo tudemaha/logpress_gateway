@@ -93,6 +93,29 @@ func receiveData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	stmtPersist := `INSERT INTO persist_sensors
+		(id, timestamp, node_id, gateway_id, temp, humid, soil_ph, soil_moisture, gas, gps)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+
+	_, err = db.Exec(stmtPersist,
+		id,
+		sensorData.Timestamp,
+		sensorData.NodeID,
+		gatewayID,
+		sensorData.Temp,
+		sensorData.Humid,
+		sensorData.SoilPH,
+		sensorData.SoilMoisture,
+		sensorData.Gas,
+		sensorData.GPS)
+	if err != nil {
+		response.DefaultInternalError()
+		w.WriteHeader(response.Code)
+		response.Data = []string{err.Error()}
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
 	response.DefaultOK()
 	json.NewEncoder(w).Encode(response)
 }

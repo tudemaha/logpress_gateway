@@ -42,6 +42,8 @@ func receiveData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Println(string(body))
+
 	var sensorData receiveDto.NewSensorData
 	err = json.Unmarshal(body, &sensorData)
 	if err != nil {

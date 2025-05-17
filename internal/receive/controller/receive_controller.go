@@ -6,6 +6,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
+	"strings"
+	"time"
 
 	"github.com/google/uuid"
 	globalDto "github.com/tudemaha/logpress_gateway/internal/global/dto"
@@ -44,8 +47,7 @@ func receiveData(w http.ResponseWriter, r *http.Request) {
 
 	log.Println(string(body))
 
-	var sensorData receiveDto.NewSensorData
-	err = json.Unmarshal(body, &sensorData)
+	sensorData, err := parseSensorData(string(body))
 	if err != nil {
 		response.DefaultInternalError()
 		w.WriteHeader(response.Code)
@@ -53,6 +55,7 @@ func receiveData(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(response)
 		return
 	}
+
 	log.Println(sensorData)
 
 	if service.CheckNullValue(&sensorData) {
@@ -120,4 +123,25 @@ func receiveData(w http.ResponseWriter, r *http.Request) {
 
 	response.DefaultOK()
 	json.NewEncoder(w).Encode(response)
+}
+
+func parseSensorData(body string) (receiveDto.NewSensorData, error) {
+	var result receiveDto.NewSensorData
+	var err error
+
+	bodyStr := strings.Split(body, ";")
+
+	result.Timestamp, err = time.Parse("2006-01-02T15:04:05Z", bodyStr[0])
+	if err != nil {
+		return result, err
+	}
+	result.NodeID = bodyStr[1]
+	result.Temp, _ = strconv.ParseFloat(bodyStr[2], 64)
+	result.Humid, _ = strconv.ParseFloat(bodyStr[3], 64)
+	result.SoilPH, _ = strconv.ParseFloat(bodyStr[4], 64)
+	result.SoilMoisture, _ = strconv.ParseFloat(bodyStr[5], 64)
+	result.Gas, _ = strconv.ParseFloat(bodyStr[6], 64)
+	result.GPS = bodyStr[7]
+
+	return result, nil
 }
